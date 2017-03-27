@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件化应用构建</title>
+</head>
+<body>
+    <div id="app4">
+        <li-list-demo v-for="fruit in fruitList" v-bind:name="fruit"></li-list-demo>
+        <span :time="time">{{message}}</span>
+        <ol>
+            <li v-for="content in tops">{{content.content}}</li>
+        </ol>
+    </div>
+
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        Vue.component("li-list-demo",{
+            props: ['fruitList'],
+            template: "<li>This is {{ name.name }}</li>"
+        });
+
+        var fruitList = [{name:"apple"}, {name:"orange"}, {name:"banana"}];
+        var vm4 = new Vue({
+            el: "#app4",
+            data: {
+                fruitList: fruitList,
+                time: new Date(),
+                tops: [
+                    {content: 'v-bind用于属性绑定，v-bind-title可以简写为:title'},
+                    {content: "父子组件通过props进行传递。props在子组件中显式声明需要传递给子组件的数据"}
+                ]
+            }
+        });
+    </script>
+</body>
+</html>
