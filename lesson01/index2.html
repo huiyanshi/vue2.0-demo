@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>条件和循环</title>
+</head>
+<body>
+	<div class="test">
+		<p v-if="show">This is p element.</p>
+        <ul>
+            <li v-for="info in infos">
+                {{info}}
+            </li>
+        </ul>
+	</div>
+
+	<script type="text/javascript" src="../vue.js"></script>
+	<script type="text/javascript">
+        var infos = [
+            "This is content1",
+            "This is content2",
+            "This is content3"
+        ];
+
+		var vm = new Vue({
+		    el: ".test",
+		    data: {
+		        show: true,
+                infos: infos
+			}
+		});
+	</script>
+</body>
+</html>

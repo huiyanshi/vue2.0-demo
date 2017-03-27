@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>事件绑定v-on</title>
+</head>
+<body>
+	<div class="test">
+		<span>{{message}}</span>
+	</div>
+
+	<script type="text/javascript" src="../vue.js"></script>
+	<script type="text/javascript">
+		var testVueObj = new Vue({
+			el: '.test',
+			data: {
+				arrList: ["aa","bb","cc","dd"],
+				objList: [
+					{name: 'tom',age: 21},
+					{name: 'xiaomi', age:23},
+					{name: 'zhangsan',age:25}
+				]
+			}
+		});
+	</script>
+</body>
+</html>

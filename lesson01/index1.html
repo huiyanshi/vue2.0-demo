@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>单向数据绑定</title>
+</head>
+<body>
+	<div>
+		{{ message }}
+	</div>
+	<div class="test">
+		<span v-on:click="info">{{content}}</span>
+		<input v-model="message">
+		{{message}}
+	</div>
+
+	<script type="text/javascript" src="../vue.js"></script>
+	<script type="text/javascript">
+		var users = [
+			{
+			    name: 'tom',
+				age: 22
+			},{
+		    	name: 'Lucy',
+				age: 18
+			}
+		];
+		var vm = new Vue({
+		    name: "vm-1",
+			el: '.test',
+			data: {
+				message: "Hello JS.",
+				users: users,
+				content: "This is content."
+			},
+			methods: {
+			    info: function () {
+					console.log(this.message);
+                },
+				print: function () {
+					console.log(this.users);
+                }
+			}
+		});
+	</script>
+</body>
+</html>
