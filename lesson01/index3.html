@@ -6,19 +6,34 @@
 <body>
 	<div class="test">
 		<span>{{message}}</span>
+		<button v-on:click="descReverse">v-on:click->reverse</button>
+		<button @click="ascReverse">@click->reverse</button>
 	</div>
 
 	<script type="text/javascript" src="../vue.js"></script>
 	<script type="text/javascript">
-		var testVueObj = new Vue({
+		var vm = new Vue({
 			el: '.test',
 			data: {
-				arrList: ["aa","bb","cc","dd"],
-				objList: [
-					{name: 'tom',age: 21},
-					{name: 'xiaomi', age:23},
-					{name: 'zhangsan',age:25}
-				]
+				message: 'This is message',
+                reverseTag: 1						//排序状态。默认为正序
+			},
+			methods: {
+                reverse: function () {
+					this.message = this.message.split("").reverse().join("");
+                },
+                descReverse: function () {
+					if(this.reverseTag) {
+					    this.reverse();
+						this.reverseTag = 0;
+					}
+                },
+                ascReverse: function () {
+					if(!this.reverseTag) {
+					    this.reverse();
+						this.reverseTag = 1;
+					}
+                }
 			}
 		});
 	</script>
