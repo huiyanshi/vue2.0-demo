@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>指令(Directives)</title>
+</head>
+<body>
+    <div id="app-3-2">
+        <p v-if="seen">This is content.</p>             <!-- v-if：逻辑指令，结果只能为true|false。即显式或隐藏当前节点 -->
+        <p v-bind:title="title">{{title}}</p>           <!-- v-bind: 参数指令，关联指定的参数数据信息 -->
+        <p v-on:click="pClick">Click Me</p>             <!-- v-on: 事件指令，绑定监听DOM事件 -->
+        <!-- 修饰符，用于指出一个指令应该以特殊的方式绑定 -->
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app-3-2",
+            data: {
+                seen: false,
+                title: "This is v-bind for title value"
+            },
+            methods: {
+                pClick: function (event) {
+                    console.log("Click" + event.target);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>模板语法</title>
+</head>
+<body>
+    <div id="app-3-1">
+        <p>{{message1}}</p><!-- 文本模板{{}}，文本模板不能在属性节点上面使用 -->
+        <p v-once>This is once {{message2}}</p><!-- v-once：当前节点下的所有文本首次渲染后，不会在响应式改变 -->
+        <p v-bind:time="time">{{message3}}</p>          <!-- <p :time="time">{{message3}}</p> -->
+        <p>{{ message4.split("").reverse().join("") }}</p>      <!-- 表达式应用 -->
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: "#app-3-1",
+            data: {
+                message1: "message1",
+                message2: "final message2",
+                message3: "v-bind:attributeName用于定义属性值，可以简写为:attributeName",
+                time: new Date(),
+                message4: "This is message4"
+            }
+        });
+    </script>
+</body>
+</html>

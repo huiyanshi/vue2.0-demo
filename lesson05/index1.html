@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class与Style绑定-HTML Class</title>
+</head>
+<body>
+    <div id="app-5-1">
+        <!--
+            v-bind:class的解析跟普通的属性绑定不一样
+         -->
+        <p :title="classes"></p>
+        <p :class="classes_str"></p>            <!-- 普通的文字，则跟普通的属性绑定一样解析，替换文本 -->
+        <p :class="classes_obj"></p>            <!-- 对象，获取对象的keys作为class样式名称，通过keys对用的属性的bool值进行动态的class样式的显式或者隐藏，多个keys表示引入多个样式 -->
+        <p :class="classes_arr"></p>            <!-- 数组，获取数组的值作为样式名称，并且替换为需要引入的样式的数据格式class1 class2,如果数组中是对象，解析同上 -->
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+                el: '#app-5-1',
+                data: {
+                    title: "This is title",
+                    classes_str: "active other",
+                    classes_obj: {
+                        active: true,
+                        other_active: true
+                    },
+                    classes_arr: ["active_1","active_2",{'active_3': true}]
+                }
+            }
+        );
+    </script>
+</body>
+</html>

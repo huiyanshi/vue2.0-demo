@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件绑定</title>
+</head>
+<body>
+    <div id="app-8-1">
+        <h2>监听事件</h2>
+        <button @click="counter += 1">Listener Event</button>
+        <span>Click count is {{counter}}</span>
+
+        <hr>
+
+        <h2>方法事件处理器</h2><!-- 默认会隐式传递原生的DOM事件Event对象 -->
+        <button @click="methodEventHandle">this is button.</button>
+        <span>Click info is - {{methodEventHandleMsg}}</span>
+
+        <hr>
+
+        <h2>内联方法事件处理器</h2>
+        <!-- 声明的传递的参数，则不会隐式的传递原生的DOM事件Event对象，需要显式的传递$event(vue实例在触发事件产生的原生DOM的Event对象属性) -->
+        <!-- 定义的形参必须是已经在vm实例中声明定义的，双引号表示传递的是字符串 -->
+        <button @click="innerMethodEventHandler(counter,'hahh',$event)">InnerButton</button>
+        <span>Click button of name is - {{innerMethodEventHandlerMsg}}</span>
+
+        <hr>
+
+        <h2>事件修饰符</h2>
+        <!--
+            .stop: 阻止事件冒泡
+            .prevent: 不在重载页面
+            .capture: 添加事件侦听器时使用事件捕获模式
+            .self: 只当事件在该元素本身才触发事件
+            .once: 事件只触发一次
+        -->
+        <!-- 阻止单击事件冒泡 -->
+        <a v-on:click.stop="doThis"></a>
+        <!-- 提交事件不在重载页面 -->
+        <form v-on:submit.prevent="onSubmit"></form>
+        <!-- 事件修饰符可以串联 -->
+        <a v-on:click.prevent="doThat"></a>
+
+        <hr>
+
+        <h2>按键修饰符</h2>
+        <!--
+            在监听键盘事件时，可以使用键盘修饰符
+            .enter:  Enter键
+            .tab: Tab键盘
+            .delete: 捕获"删除"和"后退"键
+            .esc: "Esc"键
+            .space: 'Space'键
+            .up
+            .down
+            .left
+            .right
+            .ctrl
+            .alt
+            .shift
+            .meta
+        -->
+        <input v-on:keyup.enter="addList">      <!-- 当键盘Enter按下则触发addList事件 -->
+
+        <!-- Alt + C -->
+        <input v-on:keyup.alt.67="clear">
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app-8-1',
+            data: {
+                counter: 0,
+                methodEventHandleMsg: '',
+                innerMethodEventHandlerMsg: ''
+            },
+            methods: {
+                methodEventHandle: function (event) {
+                    var childNode = event.target.firstChild;
+                    if(childNode.nodeType === 3){
+                        var content = childNode.nodeValue;
+                        this.methodEventHandleMsg = content;
+                    }else{
+                        this.methodEventHandleMsg = "undefined";
+                    }
+                },
+
+                innerMethodEventHandler: function (counter,str,event) {
+                    console.log(counter);        //0
+                    console.log(str);           //hahh
+                    this.innerMethodEventHandlerMsg = event.target.firstChild.nodeValue;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

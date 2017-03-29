@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class与Style绑定-内联样式</title>
+</head>
+<body>
+    <div id="app-5-2">
+        <!--
+            v-bind:style绑定的内联样式的值会进行样式过滤，不符合的样式格式或者是样式属性的会直接过滤，其他则会进行拼凑为一个整体的style
+         -->
+        <p :style="classes_str"></p>
+        <p :style="classes_obj"></p>
+        <p :style="classes_arr"></p>
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+                el: '#app-5-2',
+                data: {
+                    //v-bind:style在解析数据时，会过滤不属于原生样式名称style_name的数据信息
+                    classes_str: "color:red",           //字符串，格式要统一为style_name_1:style_value_1;style_name_2:style_value_2
+                    classes_obj: {                      //对象，属性名称作为style_name,属性值作为style_value。解析后为color:red;text-align:left
+                        'color': "red",
+                        'text-align': "left",
+                    },
+                    classes_arr: ["active_1","active_2",{'color': "red"}]   //同上
+                }
+            }
+        );
+    </script>
+</body>
+</html>

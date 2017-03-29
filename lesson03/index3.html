@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>过滤器</title>
+</head>
+<body>
+
+    <div id="app-3-3">
+        {{message | ucfirst}}
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        /**
+         * 过滤器：只能用于mustache 绑定和 v-bind 表达式，进行文本的转换。
+         */
+        var vm = new Vue({
+            el: "#app-3-3",
+            data: {
+                message: "hello"
+            },
+            filters: {
+                ucfirst : function (str) {
+                    if(!str) return "";
+                    var value = str.toString();
+                    return value.charAt(0).toUpperCase() + value.slice(1)
+                }
+            }
+        });
+    </script>
+
+</body>
+</html>

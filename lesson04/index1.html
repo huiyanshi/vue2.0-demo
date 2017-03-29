@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>计算属性</title>
+</head>
+<body>
+
+    <div id="app-4-1">
+        <p>{{ message }}</p>
+        <p>{{ reverseMessage }}</p>
+        <p>{{ reverseMessageFn() }}</p>
+        <p>{{ fullName }}</p>
+    </div>
+
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        /**
+         * date用于数据的定义，computed用于数据的逻辑处理。它们都会解析为vm实例的属性，其中date里面的keys会生成Observer对象，computed会生成Watcher对象。当属性改变。会遍历Watcher进行更新
+         */
+        var vm = new Vue({
+            el: "#app-4-1",
+            data: {
+                message: 'hello',
+                firstName: "Tom",
+                lastName: "Haha",
+                fullName: "Full Name"
+            },
+            //方法
+            methods: {
+                reverseMessageFn: function () {
+                    return this.message.toString().charAt(0).toUpperCase() + this.message.toString().slice(1);
+                }
+            },
+            //计算属性
+            computed: {
+                reverseMessage: function () {
+                    return this.message.toString().charAt(0).toUpperCase() + this.message.toString().slice(1);
+                }
+            },
+            //观察属性，提供指定属性变更后，订阅该属性的观察者的回调函数
+            watch: {
+                firstName: function (newFirstValue) {
+                    this.fullName = newFirstValue + this.lastName
+                },
+                lastName: function (newLastValue) {
+                    this.fullName = this.firstName + newLastValue;
+                }
+            }
+        });
+        console.log(vm);
+    </script>
+</body>
+</html>

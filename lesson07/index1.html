@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>列表渲染</title>
+</head>
+<body>
+
+    <div id="app-7-1">
+        <ul>
+            <li v-for="(item,index) in items">  <!-- 等同于v-for="(item,index) of items"  index为可选参数，如果是遍历数组，则表示索引值 -->
+                {{message}} - {{index}} - {{item.name}}
+            </li>
+        </ul>
+
+        <template v-for="item of items">
+            <span>{{item.name}}</span>
+            <hr>
+        </template>
+
+        <hr>
+
+        <ul>
+            <!-- 遍历对象 -->
+            <li v-for="(value,key) in user">
+                {{message}} - {{key}} - {{value}}
+            </li>
+        </ul>
+
+        <hr>
+
+        <ul>
+            <!-- 遍历整数 -->
+            <li v-for="(value,key) in 10">
+                {{message}} - {{key}} - {{value}}
+            </li>
+        </ul>
+
+        <hr>
+        <!-- 综合应用 -->
+        <input v-model="listVal" @keyup.enter="addLists">
+        <ul>
+            <!--<li v-for="(val,index) in lists">{{val}}&#45;&#45;&ndash;&gt;<button @click="removeLists" :listsIndex="index">X</button></li>-->
+            <!-- 组件 -->
+            <li-list-component v-for="(val,index) in lists" :lival="val" :liindex="index" @remove="lists.splice(index,1)"></li-list-component>
+        </ul>
+    </div>
+
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        Vue.component("li-list-component",{
+            props: ['lival','liindex'],
+            'template': "<li>{{liindex}} - {{lival}}----><button @click='$emit(\"remove\")'>X</button></li>"
+        });
+        var items = [
+            {name: "Tom"},
+            {name: "Lucy"},
+            {name: "Lily"}
+        ];
+        var vm = new Vue({
+            el: "#app-7-1",
+            data: {
+                message: 'Item',
+                items: items,
+                user: {
+                    name: 'Tom',
+                    age: 22,
+                    sex: 'boy'
+                },
+                listVal: "",
+                lists: [],
+            },
+            methods: {
+                addLists: function () {
+                    console.log(this.lists);
+                    this.lists.push(this.listVal);
+                    this.listVal = "";
+                },
+                removeLists: function (event) {
+                    var delListsIndex = event.target.getAttribute("listsIndex");
+                    /**
+                     * splice(index,len,[item]):删除或替换数组元素
+                     * index: 起始位置
+                     * len: 操作的元素长度
+                     * [item]: 为空，则表示
+                     */
+                    this.lists.splice(delListsIndex,1);
+                }
+            }
+        });
+    </script>
+</body>
+</html>
