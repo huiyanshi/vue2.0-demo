@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>父子组件的通讯 - props</title>
+</head>
+<body>
+
+    <div id="app-10-2">
+        <!-- 父子组件静态数据通信 -->
+        <h2>父子组件静态数据通信</h2>
+        <global-component-1 message="This is props message"></global-component-1>
+
+        <hr>
+
+        <h2>父子组件动态数据通信</h2>
+        <label>Content: <input type="text" v-model="title"></label><br>
+        <label>Input content is: </label><global-component-2 :title="title"></global-component-2>
+
+        <hr>
+        <h2>父子组件Props验证</h2>
+        <global-component-3></global-component-3>
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        Vue.component("global-component-1",{
+            props: ['message'],                     //子组件显式的声明props配置获取父组件数据信息
+            template: "<p>{{message}}</p>"
+        });
+
+        Vue.component("global-component-2",{
+            props: ['title'],
+            template: "<span>{{title}}</span>"
+        });
+
+        Vue.component("global-component-3",{
+            props: {
+                // 基础类型检测 （`null` 意思是任何类型都可以）
+                propA: Number,
+                // 多种类型
+                propB: [String, Number],
+                // 必传且是字符串
+                propC: {
+                    type: String,
+                    required: true
+                },
+                // 数字，有默认值
+                propD: {
+                    type: Number,
+                    default: 100
+                },
+                // 数组／对象的默认值应当由一个工厂函数返回
+                propE: {
+                    type: Object,
+                    default: function () {
+                        return { message: 'hello' }
+                    }
+                },
+                // 自定义验证函数
+                propF: {
+                    validator: function (value) {
+                        return value > 10
+                    }
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el: "#app-10-2",
+            data: {
+                title: ''
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>组件</title>
+</head>
+<body>
+    <div id="app-10-1">
+        <h2>全局组件：可挂载到任何vm实例DOM对象中</h2>
+        <global-app-component></global-app-component>
+        <part-app-component></part-app-component>
+    </div>
+    <hr>
+    <div id="app-10-1-2">
+        <global-app-component></global-app-component>       <!-- 使用全局组件 -->
+        <part-app-component></part-app-component>           <!-- 不显示，当前的组件为局部组件，只能在注册的vm对象的DOM才会被渲染 -->
+    </div>
+
+    <hr>
+    <h2>组件的数据绑定</h2>
+    <div id="app-10-1-3">
+        
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        //定义一个全局组件
+        Vue.component('global-app-component',{
+            template: "<p>这是一个全局组件</p>"
+        });
+
+        Vue.component("global-app-data-component",{
+            template: "<p>{{message}}</p>",
+            data: function () {                     //组件中数据的绑定需要定义为函数，返回定义的数据对象
+                return {
+                    message: 'This is message.'
+                }
+            }
+        });
+
+        //声明一个组件的配置信息
+        var partComponent = {
+            template: "<p>这是一个局部组件</p>"
+        };
+
+        var vm = new Vue({
+            el: "#app-10-1",
+            components: {
+                'part-app-component': partComponent             //在vm实例中注册组件信息，为局部组件，只能用于当前实例的DOM对象中
+            }
+        });
+
+        var vm2 = new Vue({
+            el: '#app-10-1-2'
+        });
+    </script>
+</body>
+</html>

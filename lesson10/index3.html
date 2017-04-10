@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>子父数据通讯 - 自定义事件传递</title>
+</head>
+<body>
+    <div id="app-10-3">
+        <h2>父组件通过v-on绑定子组件定义的事件</h2>
+        <p>{{count}}</p>
+        <increment-button-component></increment-button-component>
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+        Vue.component("increment-button-component",{
+            template: '<button @click="increment">{{count}}</button>',
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            methods: {
+                increment: function () {
+                    this.count += 1;
+                }
+            }
+        });
+        var vm = new Vue({
+            el: '#app-10-3',
+            data: {
+                count: 0
+            },
+            methods: {
+                totalIncrement: function () {
+                    this.count += 1;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
