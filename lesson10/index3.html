@@ -8,7 +8,28 @@
     <div id="app-10-3">
         <h2>父组件通过v-on绑定子组件定义的事件</h2>
         <p>{{count}}</p>
-        <increment-button-component></increment-button-component>
+        <increment-button-component @increment="totalIncrement"></increment-button-component>       <!-- 父组件监听(v-on)子组件的事件(increment) -->
+        <increment-button-component v-on:increment="totalIncrement"></increment-button-component>   <!-- 同上 -->
+
+        <hr>
+
+        <h2>使用自定义事件的表单输入组件</h2>
+        <input v-model="something">
+        <!--
+            v-model只是语法糖，实际通过下面的方式实现数据的双向绑定
+            等同于<input v-bind:value="something" v-on:input="something = $event.target.value"> 绑定value属性，监听输入框的input事件，进行数据的双向绑定
+         -->
+        <p>Something is - {{something}}</p>
+
+        <!-- 等同于<price-format-input-component v-bind:value="price" v-on:input="price = $event.target.value"></price-format-input-component> -->
+        <price-format-input-component v-model="price"></price-format-input-component>
+        <p>Price--------->{{price}}</p>
+
+        <hr>
+
+        <h2>不同组件之间通讯，可以使用一个空的 Vue 实例作为中央事件总线</h2>
+        <component-a></component-a>
+        <component-b></component-b>
     </div>
 
     <script type="text/javascript" src="../vue.js"></script>
@@ -23,16 +44,103 @@
             methods: {
                 increment: function () {
                     this.count += 1;
+                    this.$emit("increment");            //触发父组件的increment事件
+                }
+            }
+        });
+
+        //每个 Vue 实例都实现了事件接口(Events interface)，事件总线实例
+        var dispatchEventHub = new Vue({
+            data: {
+                message: 'Default Message'          //共享变量
+            }
+        });
+
+        Vue.component("component-a",{
+            template: '<button @click="btnAClick">Component-A Click</button>',
+            methods: {
+                btnAClick:  function (event) {
+                    var content = event.target.innerHTML.trim();
+                    dispatchEventHub.$emit("btnAClick",content);        //Hub触发指定事件
+                }
+            }
+        });
+
+        Vue.component("component-b",{
+            template: '<span>{{message}}</span>',
+            //生命周期追加自定义处理事件
+            created: function () {
+                console.log("Lifecycle ---> created ---> " + this.message);
+                //Hub监听指定事件
+                dispatchEventHub.$on("btnAClick",function (message) {
+                    this.message = message;
+                })
+            },
+            computed: {
+                message: function () {
+                    return dispatchEventHub.message;
+                }
+            }
+        });
+
+        //自定义表单组件之价格格式化组件,自动格式化保留两位小数
+        Vue.component("price-format-input-component",{
+            template: '<div><label>Price: <input type="text" @input="formatPrice($event.target.value)" /> </label>&nbsp;&nbsp;&nbsp;&nbsp;<span :style="span_style">{{tip_msg}}</span></div>',
+            props: {
+                value: Number           //父组件v-model="price" 等同于 v-bind:value="price",父组件传递给子组件value的值，并且值必须是数字
+            },
+            data: function () {
+                return  {
+                    span_style: {
+                        color: 'red',
+                        'font-size': '15px'
+                    },
+                    price: 0,
+                    tip_msg: '*格式化保留两位小数'
+                }
+            },
+            methods: {
+                formatPrice: function (value) {
+                    var regExp = new RegExp("^\\d+(\\.\\d+)?$");
+                    if(regExp.test(value)){
+                        this.tip_msg = "*当前数值会保留两位小数";
+                        var pointIndex =  value.indexOf(".");
+                        if(pointIndex == -1){
+                            this.price = value + ".00";
+                        }else{
+                            var valueArr = value.slice(0,pointIndex+3).split("");
+                            var i = 0;
+                            while(i < 2){
+                                i++;
+                                if(typeof value[pointIndex+i] === "undefined"){
+                                    valueArr[pointIndex+i] = 0;
+                                }
+                            }
+                            this.price = valueArr.join("");
+                        }
+                        /**
+                         *  触发父组件input事件.$emit(eventName,defaultValue) 调用父组件绑定的eventName事件
+                         *  如果父组件中v-on:eventName未定义，Vue会报错
+                         *  Vue中针对表单输入组件[input]都默认实现了v-on:input的事件定义，即获取输入的值，进行双向数据绑定的更新
+                         */
+                        this.$emit("input",Number(this.price));
+                        console.log(this.price);            //debug
+                    }else{
+                       this.tip_msg = "*请输入数字";
+                    }
                 }
             }
         });
         var vm = new Vue({
             el: '#app-10-3',
             data: {
-                count: 0
+                count: 0,
+                something: "",
+                price: 0
             },
             methods: {
                 totalIncrement: function () {
+                    console.log("ddd");
                     this.count += 1;
                 }
             }
