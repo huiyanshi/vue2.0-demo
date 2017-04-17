@@ -4,7 +4,8 @@
   "description": "vue2.0 demo",
   "main": "index.js",
   "scripts": {
-    "dev-serv": "node_modules\\.bin\\webpack-dev-server --color --host 192.168.0.69 --port 8080 --config webpack.base.config.js --hot --inline",
+    "dev-mint-serv": "node_modules\\.bin\\webpack-dev-server --color --host 192.168.0.69 --port 8080 --config webpack.mintui.config.js --hot --inline",
+    "dev-element-serv": "node_modules\\.bin\\webpack-dev-server --color --host 192.168.0.69 --port 8089 --config webpack.element.config.js --hot --inline",
     "dev": "node_modules\\.bin\\webpack --config webpack.base.config.js --color --display-error-details",
     "webpack-help": ".\\node_modules\\.bin\\webpack -help"
   },
@@ -19,9 +20,11 @@
   },
   "homepage": "https://github.com/aoxunzhen/vue2.0-demo#readme",
   "dependencies": {
+    "axios": "^0.16.1",
+    "element-ui": "^1.2.8",
     "mint-ui": "^2.2.3",
     "vue": "^2.2.6",
-    "vue-resource": "^1.3.1"
+    "vue-router": "^2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",

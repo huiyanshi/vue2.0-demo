@@ -3,10 +3,10 @@ var webpack = require('webpack');       //加载webpack模块
 var HTMLWebpackPlugin = require('html-webpack-plugin');     //HTML模块插件
 
 module.exports = {
-    entry: [path.join(path.resolve(),"web-demo/mint-ui/main.js")],
+    entry: [path.join(path.resolve(),"mint-ui/main.js")],
 
     output: {
-        path: path.join(path.resolve(),"web-demo/mint-ui/build/"),
+        path: path.join(path.resolve(),"mint-ui/build/"),
         filename: "[name]-build.js",
     },
 
@@ -46,7 +46,7 @@ module.exports = {
         new HTMLWebpackPlugin({
             title: "My App",                                                            //HTML文件Title
             //filename: "app.html"                                                      //默认在output指定的路径生成index.html
-            template: path.join(path.resolve(),"web-demo/mint-ui/index.html")           //模板文件，如果指定了，则按照模板文件生成
+            template: path.join(path.resolve(),"mint-ui/index.html")           //模板文件，如果指定了，则按照模板文件生成
         })
     ]
 };
