@@ -28,7 +28,7 @@
         <hr>
 
         <h2>不同组件之间通讯，可以使用一个空的 Vue 实例作为中央事件总线</h2>
-        <component-a></component-a>
+        <component-a v-on:btn-click="btnClickFunc"></component-a>
         <component-b></component-b>
     </div>
 
@@ -61,7 +61,8 @@
             methods: {
                 btnAClick:  function (event) {
                     var content = event.target.innerHTML.trim();
-                    dispatchEventHub.$emit("btnAClick",content);        //Hub触发指定事件
+                    console.log(this);
+                    this.$emit("btn-click",content);        //Hub触发指定事件
                 }
             }
         });
@@ -142,6 +143,9 @@
                 totalIncrement: function () {
                     console.log("ddd");
                     this.count += 1;
+                },
+                btnClickFunc: function () {
+                    console.log("vm----->btnAClick");
                 }
             }
         });

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+< head>
+    <meta charset="UTF-8">
+    <title>组件-使用slot分发内容</title>
+</head>
+<body>
+    <div id="app-10-4">
+        <h2>编译作用域：父组件模板的内容在父组件作用域内编译；子组件模板的内容在子组件作用域内编译</h2>
+        <p>{{message}}</p>
+        <component-a v-show="isShow"></component-a>         <!-- 父组件决定组件内的元素【包括普通元素标签或者子组件】的显示或者隐藏，子组件决定子组件内的元素的显示或者隐藏 -->
+
+        <hr>
+
+        <h2>单点Slot[插槽]</h2>
+        <p>这是父组件的标题</p>
+        <!--
+            除非子组件模板包含至少一个 <slot> 插口，否则父组件的内容将会被丢弃。当子组件模板只有一个没有属性的 slot 时，父组件整个内容片段将插入到 slot 所在的 DOM 位置，并替换掉 slot 标签本身。
+            最初在 <slot> 标签中的任何内容都被视为备用内容。备用内容在子组件的作用域内编译，并且只有在宿主元素为空，且没有要插入的内容时才显示备用内容
+        -->
+        <component-b>
+            <p>这是父组件元素组件的文本节点的信息1</p>
+            <p>这是父组件元素组件的文本节点的信息2</p>
+        </component-b>
+
+        <hr>
+        <h2>具名Slot</h2>
+        <component-c>
+            <p>这是其他区域的内容信息a</p>
+            <h3 slot="header_slot">这是一个头部标区域的内容信息</h3>
+            <p>这是主体区域的内容信息1</p>
+            <p>这是主体区域的内容信息2</p>
+            <h3 slot="footer_slot">这是一个底部区域的内容信息</h3>
+            <p>这是其他区域的内容信息z</p>
+        </component-c>
+
+        <hr>
+        <h2>动态组件：通过使用保留的 &lt;component&gt;，动态地绑定到它的 is 特性，我们让多个组件可以使用同一个挂载点，并动态切换</h2>
+        <componet v-bind:is="component_name"></componet>
+        <label>切换不同组件：
+            <select v-model="component_name">
+                <option value="component-1">组件1</option>
+                <option value="component-2">组件2</option>
+                <option value="component-3">组件3</option>
+            </select>
+        </label>
+
+        <hr>
+        <h2>子组件索引：使用 ref 为子组件指定一个索引ID，获取的格式为：vm.$refs.componentID</h2>
+        <component-d ref="componentD"></component-d>
+        <button @click="printSubComponentMsg">Click Me</button>
+        <span>{{subComponentMsg}}</span>
+    </div>
+
+    <script type="text/javascript" src="../vue.js"></script>
+    <script type="text/javascript">
+
+        Vue.component('component-a', {
+            template: '<div><p v-show="isShow">皇天后土</p><p v-show="isShow2">黄天当立</p></div>',
+            data: function () {
+                return {
+                    isShow: true,
+                    isShow2: true
+                }
+            }
+        });
+
+        Vue.component('component-b',{
+            template: '<div><p>这是子组件的标题</p><slot>这是一个插槽点。如果没有替换内容，则显示这条信息</slot></div>'
+        });
+
+        Vue.component('component-c',{
+            template: '<div><header><slot name="header_slot">这是一个默认的头部区域信息</slot></header><main><slot>这是一个默认的主体区域信息</slot></main><footer><slot name="footer_slot">这是一个默认的底部区域信息</slot></footer></div>'
+        });
+
+        Vue.component('component-1',{
+            template: "<p>这是组件component-1</p>"
+        });
+        Vue.component('component-2',{
+            template: "<p>这是组件component-2</p>"
+        });
+        Vue.component('component-3',{
+            template: "<p>这是组件component-3</p>"
+        });
+
+        Vue.component('component-d',{
+            template: '<div><p>这是子组件里面的一个元素内容</p></div>',
+            data: function () {
+                return {
+                    msg: '这是子组件的一个数据属性'
+                }
+            }
+        });
+
+        var vm = new Vue({
+            el: '#app-10-4',
+            data: {
+                message: "This is message.",
+                isShow: false,               //挂载点的子组件会被隐藏。不管子组件里面的元素是显示或者隐藏
+                component_name: 'component-1',
+                subComponentMsg: ''
+            },
+            methods: {
+                printSubComponentMsg: function () {
+                    this.subComponentMsg = this.$refs.componentD.msg;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
