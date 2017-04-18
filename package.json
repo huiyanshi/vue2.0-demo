@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev-mint-serv": "node_modules\\.bin\\webpack-dev-server --color --host 192.168.0.69 --port 8080 --config webpack.mintui.config.js --hot --inline",
-    "dev-element-serv": "node_modules\\.bin\\webpack-dev-server --color --host 192.168.0.69 --port 8089 --config webpack.element.config.js --hot --inline",
+    "dev-element-serv": "node_modules\\.bin\\webpack-dev-server --color --host localhost --port 8089 --config webpack.element.config.js --hot --inline",
     "dev": "node_modules\\.bin\\webpack --config webpack.base.config.js --color --display-error-details",
     "webpack-help": ".\\node_modules\\.bin\\webpack -help"
   },
@@ -22,6 +22,7 @@
   "dependencies": {
     "axios": "^0.16.1",
     "element-ui": "^1.2.8",
+    "jquery": "^3.2.1",
     "mint-ui": "^2.2.3",
     "vue": "^2.2.6",
     "vue-router": "^2.4.0"
