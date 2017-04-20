@@ -16,11 +16,12 @@
         </el-row>
         <el-row>
             <el-col :span="4">
-                <el-menu mode="vertical" theme="dark" default-active="1-1">
+                <el-menu mode="vertical" theme="dark" @open="handlerOpen">
                     <el-submenu index="1">
-                        <template slot="title"><i class="el-icon-message"></i>导航一</template>
-                        <el-menu-item index="1-1">选项1</el-menu-item>
-                        <el-menu-item index="1-2">选项2</el-menu-item>
+                        <template slot="title"><i class="el-icon-message"></i>接口文档</template>
+                        <el-submenu v-for="(module,moduleIndex) in rpcMenus" :index="'1-' + moduleIndex" :module="module">
+                            <template slot="title">{{ module }}</template>
+                        </el-submenu>
                     </el-submenu>
                     <el-submenu index="2">
                         <template slot="title"><i class="el-icon-message"></i>导航二</template>
@@ -38,6 +39,11 @@
 <script type="text/javascript">
     exports.default = {
         name: 'index',
+        data(){
+            return {
+                'rpcMenus': ''
+            }
+        },
         methods: {
             logout(){
                 var _router = this.$router;
@@ -68,6 +74,31 @@
                         }
                     },
                     type: 'warning'
+                });
+            },
+
+            //导航栏处理中心
+            handlerOpen(index,indexPath) {
+                switch (index) {
+                    case "1":
+                        this.getMenus();
+                        break;
+                }
+            },
+
+            //获取模块中心
+            getMenus(){
+                var _vm = this;
+                $.ajax({
+                    url: 'http://local.service.zuimeimami.com/admin/rpcdoc/modules',
+                    dataType: 'json',
+                    success(response) {
+                        if(response.code == 1){
+                            _vm.rpcMenus = response.data;
+                        }else{
+                            _vm.rpcMenus = [];
+                        }
+                    }
                 });
             }
         }
